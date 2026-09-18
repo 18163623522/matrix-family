@@ -127,6 +127,8 @@ footer a:hover { color: var(--accent-blue); }
     <button class="tab" data-key="box"><span class="ic">🎓</span>盒子矩阵课<small>8 步流程教学 + 测验</small></button>
     <button class="tab" data-key="tutorial"><span class="ic">📖</span>矩阵与空间变换<small>完整教程 · 6 演示</small></button>
     <button class="tab" data-key="lab"><span class="ic">🔬</span>点 × 矩阵实验室<small>自由实验台</small></button>
+    <button class="tab" data-key="qcourse"><span class="ic">🎓</span>四元数课程<small>9 步教学 + 测验</small></button>
+    <button class="tab" data-key="qlab"><span class="ic">🔬</span>四元数实验室<small>互转/FTransform/slerp</small></button>
   </nav>
   <button class="theme-toggle" onclick="toggleTheme()" aria-label="切换主题" title="切换暗/亮主题（同步到三个页面）">&#9790;</button>
 </header>
@@ -136,21 +138,27 @@ footer a:hover { color: var(--accent-blue); }
   <iframe id="f-box" title="盒子的矩阵课"></iframe>
   <iframe id="f-tutorial" title="矩阵与空间变换教程"></iframe>
   <iframe id="f-lab" title="点的矩阵变换 3D 实验室"></iframe>
+  <iframe id="f-qcourse" title="四元数课程"></iframe>
+  <iframe id="f-qlab" title="四元数实验室"></iframe>
 </div>
 
 <footer>
   三个页面也可独立访问：
   <a href="https://18163623522.github.io/transform-box-lab/" target="_blank">盒子矩阵课</a> ·
   <a href="https://18163623522.github.io/matrix-space-tutorial/" target="_blank">矩阵与空间变换</a> ·
-  <a href="https://18163623522.github.io/point-matrix-lab/" target="_blank">点×矩阵实验室</a>
-  　|　建议从左到右依次学习：先看盒子课建立直觉 → 教程系统展开 → 实验室自由探索
+  <a href="https://18163623522.github.io/point-matrix-lab/" target="_blank">点×矩阵实验室</a> ·
+  <a href="https://18163623522.github.io/quaternion-course/" target="_blank">四元数课程</a> ·
+  <a href="https://18163623522.github.io/quaternion-lab/" target="_blank">四元数实验室</a>
+  　|　建议顺序：盒子课直觉 → 教程系统展开 → 矩阵实验室 → 四元数课程 → 四元数实验室
 </footer>
 
 <script>
 var URLS = {
   box: 'https://18163623522.github.io/transform-box-lab/',
   tutorial: 'https://18163623522.github.io/matrix-space-tutorial/',
-  lab: 'https://18163623522.github.io/point-matrix-lab/'
+  lab: 'https://18163623522.github.io/point-matrix-lab/',
+  qcourse: 'https://18163623522.github.io/quaternion-course/',
+  qlab: 'https://18163623522.github.io/quaternion-lab/'
 };
 var loaded = {};
 var cur = 'box';
@@ -160,7 +168,7 @@ function curTheme() {
   return document.documentElement.getAttribute('data-theme') === 'light' ? 'light' : 'dark';
 }
 function broadcastTheme() {
-  ['box', 'tutorial', 'lab'].forEach(function(k) {
+  ['box', 'tutorial', 'lab', 'qcourse', 'qlab'].forEach(function(k) {
     var f = document.getElementById('f-' + k);
     try { if (f.contentWindow) f.contentWindow.postMessage({ type: 'mf-theme', theme: curTheme() }, '*'); } catch (e) {}
   });
@@ -178,7 +186,7 @@ function activate(key) {
   document.querySelectorAll('.tab').forEach(function(b) {
     b.classList.toggle('active', b.getAttribute('data-key') === key);
   });
-  ['box', 'tutorial', 'lab'].forEach(function(k) {
+  ['box', 'tutorial', 'lab', 'qcourse', 'qlab'].forEach(function(k) {
     var f = document.getElementById('f-' + k);
     f.classList.toggle('show', k === key);
     if (k === key && !loaded[k]) {
@@ -198,7 +206,7 @@ document.querySelectorAll('.tab').forEach(function(b) {
 // 键盘 1/2/3 快捷切换
 window.addEventListener('keydown', function(e) {
   if (e.target && /input|textarea|select/i.test(e.target.tagName)) return;
-  var map = { '1': 'box', '2': 'tutorial', '3': 'lab' };
+  var map = { '1': 'box', '2': 'tutorial', '3': 'lab', '4': 'qcourse', '5': 'qlab' };
   if (map[e.key]) activate(map[e.key]);
 });
 activate(cur);
